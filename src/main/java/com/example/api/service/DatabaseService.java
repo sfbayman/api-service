@@ -91,3 +91,42 @@ public class DatabaseService {
         }
     }
 */
+
+/* Changes for TEST-1001:
+diff --git a/src/main/java/com/example/api/service/DatabaseService.java b/src/main/java/com/example/api/service/DatabaseService.java
+index 1234567..7654321 100644
+--- a/src/main/java/com/example/api/service/DatabaseService.java
++++ b/src/main/java/com/example/api/service/DatabaseService.java
+@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
+ import java.sql.ResultSet;
+ import java.sql.SQLException;
+ import java.sql.Connection;
++import javax.sql.DataSource;
+ 
+ public class DatabaseService {
+     private DataSource dataSource;
+@@ -22,14 +23,15 @@ public class DatabaseService {
+     }
+ 
+     public ResultSet fetchData(String query) throws SQLException {
+-        Connection connection = dataSource.getConnection();
+-        PreparedStatement stmt = connection.prepareStatement(query);
+-        ResultSet rs = stmt.executeQuery();
+-        // ... process the result
+-        rs.close();
+-        stmt.close();
+-        connection.close();
+-        return rs;
++        try (Connection connection = dataSource.getConnection();
++             PreparedStatement stmt = connection.prepareStatement(query);
++             ResultSet rs = stmt.executeQuery()) {
++            // ... process the result
++            return rs;
++        } catch (SQLException e) {
++            // Log the exception and potentially rethrow or handle appropriately
++            throw e;
++        }
+     }
+ }
+
+*/
