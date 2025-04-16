@@ -130,3 +130,38 @@ index 1234567..7654321 100644
  }
 
 */
+
+/* Changes for TEST-1001:
+diff --git a/src/main/java/com/example/api/service/DatabaseService.java b/src/main/java/com/example/api/service/DatabaseService.java
+index a9f5b3c..4d2e6fa 100644
+--- a/src/main/java/com/example/api/service/DatabaseService.java
++++ b/src/main/java/com/example/api/service/DatabaseService.java
+@@ -45,11 +45,15 @@ public class DatabaseService {
+         Connection connection = null;
+         try {
+             connection = connectionPool.getConnection();
+-            // execute database operations
++            // execute database operations
++        } catch (SQLException e) {
++            // handle exception
++            logger.error("Database error: ", e);
+         } finally {
+-            if (connection != null) {
+-                connection.close();
+-            }
++            closeConnection(connection);
++        }
++    }
++
++    private void closeConnection(Connection connection) {
++        // ensure the connection is properly closed
++        if (connection != null) {
++            try {
++                connection.close();
++            } catch (SQLException e) {
++                logger.error("Error closing connection: ", e);
++            }
+         }
+     }
+ }
+*/
